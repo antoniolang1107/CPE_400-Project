@@ -10,29 +10,29 @@ from enum import Enum
 
 def main():
 	"""Driver of the script"""
-	
+
 	run = True
+	graph = None
 	while(run):
 		choice = get_input()
 		try:
 			choice = int(choice)
 
 			if choice == Choice.GENERATE.value:
-				print("Generate graph selected")
-				graph = generate_graph(5)
+				num_nodes = input("Enter the number of nodes in the network: ")
+				graph = generate_graph(num_nodes)
 			elif choice == Choice.DISPLAY.value:
-				print("Display graph selected")
 				display_graph(graph)
 			elif choice == Choice.SUMMARY.value:
 				network_summary(graph)
-				
 			elif choice == Choice.EXIT.value:
-				run = False # or exit("Bye now!")
+				run = False
+				print("Bye now!\n")
 			else:
-				print("Invalid choice selected")
+				print("Invalid choice selected\n")
 
 		except ValueError:
-			print("Option entered was not a number")
+			print("Option entered was not a number\n")
 
 		
 def djikstras_algorithm(start_node, end_node = None) -> dict:
@@ -47,10 +47,10 @@ def djikstras_algorithm(start_node, end_node = None) -> dict:
 def get_input() -> str:
 	"""Gets the menu selection from the user"""
 	print("Select from the following options:\n"
-		  "1. Generate Graph"
-		  "2. Display Network Topology"
-		  "3. Display Network Shortest-Path Summary"
-		  "0. Exit")
+		  "1. Generate Graph\n"
+		  "2. Display Network Topology\n"
+		  "3. Display Network Shortest-Path Summary\n"
+		  "0. Exit\n")
 	return input("Enter your choice: ")
 
 def generate_graph(num_nodes: int) -> nx.classes.graph.Graph: 
@@ -64,17 +64,17 @@ def generate_graph(num_nodes: int) -> nx.classes.graph.Graph:
 		network_graph = nx.random_internet_as_graph(num_nodes)
 		return network_graph
 	except ValueError:
-		print("The number of nodes must be an integer")
+		print("The number of nodes must be an integer\n")
 
 
 def display_graph(network_graph: nx.classes.graph.Graph) -> None:
 	"""Displays an existing AS network graph
 	:param network_graph:
 	"""
-	if graph is not None:
+	if network_graph is not None:
 		nx.draw(network_graph)
 	else:
-		print("A network graph must be created first!")
+		print("A network graph must be created first!\n")
 
 
 def network_summary(path_matrix): # tentative parameters

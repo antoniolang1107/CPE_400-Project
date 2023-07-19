@@ -72,7 +72,12 @@ def display_graph(network_graph: nx.classes.graph.Graph) -> None:
 	:param network_graph:
 	"""
 	if network_graph is not None:
-		nx.draw(network_graph)
+		position = nx.random_layout(network_graph)
+		nx.draw_networkx(network_graph,
+						 node_size=350,
+						 width=1.25)
+		plt.title("AS Network Graph")
+		plt.show()
 	else:
 		print("A network graph must be created first!\n")
 

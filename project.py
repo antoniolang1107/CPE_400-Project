@@ -5,6 +5,7 @@
 
 import matplotlib.pyplot as plt
 import networkx as nx
+import numpy as np
 
 from enum import Enum
 
@@ -36,12 +37,14 @@ def main():
 
 		
 def djikstras_algorithm(start_node, end_node = None) -> dict:
-	"""Calculates the shortest path from a node to other nodes
+	"""Calculates the shortest path from a node to all nodes
 
 	:param start_node:
 	:param end_node:
-	:return path_dict: Dictionary of format {node : distance} for each other node
+	:return path_dict: Dictionary of format {node : distance} for all nodes
 	"""
+
+	# include {start_node : 0} in the dict
 	pass
 
 def get_input() -> str:
@@ -69,6 +72,7 @@ def generate_graph(num_nodes: int) -> nx.classes.graph.Graph:
 
 def display_graph(network_graph: nx.classes.graph.Graph) -> None:
 	"""Displays an existing AS network graph
+	
 	:param network_graph:
 	"""
 	if network_graph is not None:
@@ -82,15 +86,19 @@ def display_graph(network_graph: nx.classes.graph.Graph) -> None:
 		print("A network graph must be created first!\n")
 
 
-def network_summary(path_matrix): # tentative parameters
+def network_summary(network_graph: nx.classes.graph.Graph) -> None:
 	"""Dislpay a summary of shortest paths from all nodes to all others
+	
+	:param network_graph:
 	"""
 
-	"""
-	call get_all_shortest_paths
-	display paths
-	"""
-	pass
+	distances_dict_list = get_all_shortest_paths(network_graph)
+	# below list is for testing
+	distances_dict_list = [{0: 0, 1:5, 2:20}, 
+						  {0:5, 1:0, 2:15}, 
+						  {0:20, 1:15, 2:0}]
+	distance_matrix = distance_dict_to_matrix(distances_dict_list)
+	display_distance_matrix(distance_matrix)
 
 def get_all_shortest_paths(network: nx.classes.graph.Graph) -> dict:
 	"""Calculates Djikstra's Algorithm from all nodes
@@ -106,6 +114,20 @@ def get_all_shortest_paths(network: nx.classes.graph.Graph) -> dict:
 	"""
 
 	pass
+
+def display_distance_matrix(distance_matrix) -> None:
+	plt.matshow(distance_matrix)
+	plt.show()
+
+def distance_dict_to_matrix(distances: list) -> np.array:
+	num_nodes = len(distances)
+	distance_matrix = np.empty([num_nodes,num_nodes])
+	
+	for i in range(num_nodes):
+		for j in range(num_nodes):
+			distance_matrix[i,j] = distances[i][j]
+	return distance_matrix
+
 
 class Choice(Enum):
 	"""Enum class for menu selections"""

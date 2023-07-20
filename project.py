@@ -49,6 +49,7 @@ def djikstras_algorithm(start_node, end_node = None) -> dict:
 
 def get_input() -> str:
 	"""Gets the menu selection from the user"""
+	
 	print("Select from the following options:\n"
 		  "1. Generate Graph\n"
 		  "2. Display Network Topology\n"
@@ -62,9 +63,12 @@ def generate_graph(num_nodes: int) -> nx.classes.graph.Graph:
 	:param num_nodes: Number of nodes to generate
 	:return network_graph: AS network graph
 	"""
+	
 	try:
 		num_nodes = int(num_nodes)
 		network_graph = nx.random_internet_as_graph(num_nodes)
+		for i, edge in enumerate(network_graph.edges()):
+			network_graph[edge[0]][edge[1]]['weight'] = np.random.randint(99, size=1)[0] + 1
 		return network_graph
 	except ValueError:
 		print("The number of nodes must be an integer\n")
@@ -75,11 +79,15 @@ def display_graph(network_graph: nx.classes.graph.Graph) -> None:
 	
 	:param network_graph:
 	"""
+	
 	if network_graph is not None:
-		position = nx.random_layout(network_graph)
+		position = nx.kamada_kawai_layout(network_graph)
+		labels = nx.get_edge_attributes(network_graph, "weight")
 		nx.draw_networkx(network_graph,
-						 node_size=350,
+						 pos=position,
+						 node_size=250,
 						 width=1.25)
+		nx.draw_networkx_edge_labels(network_graph, position, labels)
 		plt.title("AS Network Graph")
 		plt.show()
 	else:
@@ -100,20 +108,18 @@ def network_summary(network_graph: nx.classes.graph.Graph) -> None:
 	distance_matrix = distance_dict_to_matrix(distances_dict_list)
 	display_distance_matrix(distance_matrix)
 
-def get_all_shortest_paths(network: nx.classes.graph.Graph) -> dict:
+def get_all_shortest_paths(network: nx.classes.graph.Graph) -> list:
 	"""Calculates Djikstra's Algorithm from all nodes
 
 	:param network: Graph of the network
 	:return distances: dict of Distances from a node to other nodes
 	"""
 
+	shortest_paths = []
 
-	"""
-	for node in graph:
-		djikstras(start_end)
-	"""
-
-	pass
+	for node in network.nodes():
+		shortest_paths.append(djikstras_algorithm(node))
+	return shortest_paths
 
 def display_distance_matrix(distance_matrix) -> None:
 	plt.matshow(distance_matrix)

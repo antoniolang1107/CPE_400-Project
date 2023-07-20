@@ -101,10 +101,6 @@ def network_summary(network_graph: nx.classes.graph.Graph) -> None:
 	"""
 
 	distances_dict_list = get_all_shortest_paths(network_graph)
-	# below list is for testing
-	distances_dict_list = [{0: 0, 1:5, 2:20}, 
-						  {0:5, 1:0, 2:15}, 
-						  {0:20, 1:15, 2:0}]
 	distance_matrix = distance_dict_to_matrix(distances_dict_list)
 	display_distance_matrix(distance_matrix)
 

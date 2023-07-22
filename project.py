@@ -36,16 +36,49 @@ def main():
 			print("Option entered was not a number\n")
 
 		
-def djikstras_algorithm(start_node, end_node = None) -> dict:
+def djikstras_algorithm(graph, start_node) -> dict:
 	"""Calculates the shortest path from a node to all nodes
 
+	:param graph:
 	:param start_node:
-	:param end_node:
-	:return path_dict: Dictionary of format {node : distance} for all nodes
+	:return path_dict: Dictionary of format {node : distance from start_node} for all nodes
 	"""
+	
+	unchecked_nodes = list(graph.nodes())
+	path_dict = {}
+ 
+    
+	max_value = 10000
 
-	# include {start_node : 0} in the dict
-	pass
+	for node in unchecked_nodes:
+		path_dict[node] = max_value
+   
+	path_dict[int(start_node)] = 0
+    
+   
+	while unchecked_nodes:
+        
+		current_min_node = None
+        
+		for node in unchecked_nodes: 
+			if current_min_node == None:
+				current_min_node = node
+			elif path_dict[node] < path_dict[current_min_node]:
+				current_min_node = node
+        
+		neighbors = list(graph.neighbors(current_min_node))
+        
+		for neighbor in neighbors:
+           
+			tentative_value = path_dict[current_min_node] + graph[current_min_node][neighbor]["weight"]
+            
+			if tentative_value < path_dict[neighbor]:
+               
+				path_dict[neighbor] = tentative_value
+                
+		unchecked_nodes.remove(current_min_node)
+
+	return path_dict
 
 def get_input() -> str:
 	"""Gets the menu selection from the user"""
@@ -74,7 +107,7 @@ def generate_graph(num_nodes: int) -> nx.classes.graph.Graph:
 		print("The number of nodes must be an integer\n")
 
 
-def display_graph(network_graph: nx.classes.graph.Graph) -> None:
+def display_graph(network_graph: nx.classes.graph.Graph):
 	"""Displays an existing AS network graph
 	
 	:param network_graph:
@@ -89,6 +122,7 @@ def display_graph(network_graph: nx.classes.graph.Graph) -> None:
 						 width=1.25)
 		nx.draw_networkx_edge_labels(network_graph, position, labels)
 		plt.title("AS Network Graph")
+		plt.axis("off")
 		plt.show()
 	else:
 		print("A network graph must be created first!\n")
@@ -99,10 +133,12 @@ def network_summary(network_graph: nx.classes.graph.Graph) -> None:
 	
 	:param network_graph:
 	"""
-
-	distances_dict_list = get_all_shortest_paths(network_graph)
-	distance_matrix = distance_dict_to_matrix(distances_dict_list)
-	display_distance_matrix(distance_matrix)
+	if network_graph is not None:
+		distances_dict_list = get_all_shortest_paths(network_graph)
+		distance_matrix = distance_dict_to_matrix(distances_dict_list)
+		display_distance_matrix(distance_matrix)
+	else:
+		print("A network graph must be created first!\n")
 
 def get_all_shortest_paths(network: nx.classes.graph.Graph) -> list:
 	"""Calculates Djikstra's Algorithm from all nodes
@@ -114,11 +150,16 @@ def get_all_shortest_paths(network: nx.classes.graph.Graph) -> list:
 	shortest_paths = []
 
 	for node in network.nodes():
-		shortest_paths.append(djikstras_algorithm(node))
+		shortest_paths.append(djikstras_algorithm(network, node))
 	return shortest_paths
 
 def display_distance_matrix(distance_matrix) -> None:
-	plt.matshow(distance_matrix)
+	fig, ax = plt.subplots()
+	ax.matshow(distance_matrix, cmap = 'Oranges')
+
+	for (i,j), z in np.ndenumerate(distance_matrix):
+		ax.text(j, i, z, ha = 'center', va = 'center')
+
 	plt.show()
 
 def distance_dict_to_matrix(distances: list) -> np.array:

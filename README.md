@@ -7,10 +7,9 @@ to find the shortest paths between devices across the network.
 
 # Package installation and running the program:
 
-Both python and networkx are required to properly run the program. To get networkx, run the following command via
-terminal:
+Both python and networkx are required to properly run the program. To get all required packages, run the following command via terminal:
 
-* `pip install -r networkx[default]`
+* `pip install -r requirements.txt`
 
 and then use the following command via terminal to run the program:
 
@@ -32,6 +31,3 @@ with the intended command to get the following functionality:
 
 0 - Exit:
  - This function will exit the program.
-
-# Novel Contribution:
-# Results and analysis:

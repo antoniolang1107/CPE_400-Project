@@ -159,7 +159,9 @@ def display_distance_matrix(distance_matrix) -> None:
 
 	for (i,j), z in np.ndenumerate(distance_matrix):
 		ax.text(j, i, z, ha = 'center', va = 'center')
-
+	plt.title("Shortest Node-Node Paths")
+	plt.xlabel("Destination Node")
+	plt.ylabel("Source Node")
 	plt.show()
 
 def distance_dict_to_matrix(distances: list) -> np.array:

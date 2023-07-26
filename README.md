@@ -30,7 +30,7 @@ with the intended command to get the following functionality:
  - This will create a pop-up window with a 2-Dimensional matrix, with each value on the x-axis corresponding with source nodes and each value on the y-axis corresponding with destination nodes. Each node from the network generated using Function 1 will appear here. Additionally, the shortest path distance between nodes, as calculated using Dijkstra's algorithm, will appear in each cell. For reference, the shortest path distance between Node X and Node Y will appear in cell [X,Y]. The distance between a node and itself (i.e. cell [X, X]) is 0. Each cell is color coded, with larger paths colored in darker shades of orange. If no network has been generated using Function 1, this Function will generate an error message and return you to the main menu. To resume use of the program, close out of this pop-up window.
 
 4 - Find Shortest Path To-From Specified Nodes:
-- Displays the shortest path for a specified source and destination node. The user is first prompted for the respective nodes they would like the shortest path for. Dijkstra's Algorithm is then used to find the path and return it to the user.
+- Displays the shortest path for a specified source and destination node. The user is first prompted for the respective nodes they would like the shortest path for. Dijkstra's Algorithm is then used to find the path and distance of that path, and returns it to the user.
 
 0 - Exit:
  - This function will exit the program.

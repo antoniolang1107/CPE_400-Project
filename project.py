@@ -29,6 +29,8 @@ def main():
 			#Function 3: display Dijkstra's shortest paths
 			elif choice == Choice.SUMMARY.value:
 				network_summary(graph)
+			elif choice == Choice.ROUTE.value:
+				find_path(graph)
 			#Function 0: exit function
 			elif choice == Choice.EXIT.value:
 				run = False
@@ -95,6 +97,7 @@ def get_input() -> str:
 		  "1. Generate Graph\n"
 		  "2. Display Network Topology\n"
 		  "3. Display Network Shortest-Path Summary\n"
+		  "4. Find Shortest Path To-From Specified Nodes\n"
 		  "0. Exit\n")
 	return input("Enter your choice: ")
 
@@ -191,6 +194,42 @@ def distance_dict_to_matrix(distances: list) -> np.array:
 			distance_matrix[i,j] = distances[i][j]
 	return distance_matrix
 
+def find_path(network_graph: nx.classes.graph.Graph) -> None:
+	"""Finds the shortest path from a source to destination node
+
+	:param network_graph: AS network graph
+	"""
+
+	if network_graph is not None:
+		source, destination = get_source_dest_nodes(network_graph)
+		path = None
+		# path = djikstras_algorithm(source, destination)
+		print(f"The shortest path from {source} to {destination} is: {path}")
+
+	else:
+		print("A network graph must be created first!\n")
+
+def get_source_dest_nodes(network_graph: nx.classes.graph.Graph) -> tuple:
+	"""
+	:param network_graph: AS network graph
+	"""
+	index = 0
+	graph_nodes = network_graph.nodes()
+	nodes_name = ['starting', 'ending']
+	nodes = [None, None]
+	while index < 2:
+		node = input(f"Please enter the {nodes_name[index]} node: ")
+		try:
+			node = int(node)
+			if node in graph_nodes:
+				nodes[index] = node
+				index += 1
+			else:
+				print("Node entered is not in the network")
+		except ValueError:
+			print("Node entered was not a number\n")
+
+	return nodes[0], nodes[1]
 
 class Choice(Enum):
 	"""Enum class for menu selections"""
@@ -198,6 +237,7 @@ class Choice(Enum):
 	GENERATE = 1
 	DISPLAY = 2
 	SUMMARY = 3
+	ROUTE = 4
 
 if __name__ == "__main__":
 	main()

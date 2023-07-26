@@ -29,6 +29,7 @@ def main():
 			#Function 3: display Dijkstra's shortest paths
 			elif choice == Choice.SUMMARY.value:
 				network_summary(graph)
+			#Function 4: display specific route
 			elif choice == Choice.ROUTE.value:
 				find_path(graph)
 			#Function 0: exit function
@@ -43,7 +44,7 @@ def main():
 			print("Option entered was not a number\n")
 
 		
-def djikstras_algorithm(graph, start_node) -> dict:
+def dijkstras_algorithm(graph, start_node) -> dict:
 	"""Calculates the shortest path from a node to all nodes
 
 	:param graph: AS network graph
@@ -53,7 +54,7 @@ def djikstras_algorithm(graph, start_node) -> dict:
 	
 	unchecked_nodes = list(graph.nodes())
 	path_dict = {}
- 
+	previous_nodes = {}
     
 	max_value = 10000
 
@@ -82,10 +83,11 @@ def djikstras_algorithm(graph, start_node) -> dict:
 			if tentative_value < path_dict[neighbor]:
                
 				path_dict[neighbor] = tentative_value
+				previous_nodes[neighbor] = current_min_node
                 
 		unchecked_nodes.remove(current_min_node)
 
-	return path_dict
+	return path_dict, previous_nodes
 
 def get_input() -> str:
 	"""Gets the menu selection from the user
@@ -162,7 +164,8 @@ def get_all_shortest_paths(network: nx.classes.graph.Graph) -> list:
 	shortest_paths = []
 
 	for node in network.nodes():
-		shortest_paths.append(djikstras_algorithm(network, node))
+		temp_path_dict, ignore_val = dijkstras_algorithm(network, node)
+		shortest_paths.append(temp_path_dict)
 	return shortest_paths
 
 def display_distance_matrix(distance_matrix: np.array) -> None:
@@ -202,12 +205,32 @@ def find_path(network_graph: nx.classes.graph.Graph) -> None:
 
 	if network_graph is not None:
 		source, destination = get_source_dest_nodes(network_graph)
-		path = None
-		# path = djikstras_algorithm(source, destination)
-		print(f"The shortest path from {source} to {destination} is: {path}")
+		dist, path = get_shortest_path(network_graph, source, destination)
+			
+		print(f"The distance from {source} to {destination} is: {dist}")
+		print(f"The shortest path from {source} to {destination} is: {path}\n")
 
 	else:
 		print("A network graph must be created first!\n")
+
+def get_shortest_path(graph, src, dest) -> list:
+	path_dictionary, prev_nodes = dijkstras_algorithm(graph, src)
+
+	try:
+		current_node = int(dest)
+		optimal_path = []
+		while True:
+			optimal_path.insert(0, current_node)
+			if current_node == int(src):
+				break
+			current_node = prev_nodes[current_node]
+
+	except:
+		print("This path not possible")
+
+	distance = path_dictionary[dest]
+
+	return distance, optimal_path
 
 def get_source_dest_nodes(network_graph: nx.classes.graph.Graph) -> tuple:
 	"""

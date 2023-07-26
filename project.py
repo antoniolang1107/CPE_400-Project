@@ -84,7 +84,6 @@ def djikstras_algorithm(graph, start_node) -> dict:
 				path_dict[neighbor] = tentative_value
                 
 		unchecked_nodes.remove(current_min_node)
-
 	return path_dict
 
 def get_input() -> str:
@@ -210,8 +209,10 @@ def find_path(network_graph: nx.classes.graph.Graph) -> None:
 		print("A network graph must be created first!\n")
 
 def get_source_dest_nodes(network_graph: nx.classes.graph.Graph) -> tuple:
-	"""
+	"""Prompts the user for the source and destination nodes and returns repsective values
+
 	:param network_graph: AS network graph
+	:return: source node, destination node
 	"""
 	index = 0
 	graph_nodes = network_graph.nodes()

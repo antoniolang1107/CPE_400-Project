@@ -31,3 +31,7 @@ with the intended command to get the following functionality:
 
 0 - Exit:
  - This function will exit the program.
+
+ # Results and analysis:
+
+ This program helps to demonstrate a simulated AS network, using python matplotlib to show visual diagrams of the connections within the generated network. Since the scope of our project did not include generating local preference values, this program instead helps to simulate an AS network's implementation of Border Gateway Protocol's second elimination rule to select a route to a network prefix: using Dijkstra's algorithm to find the shortest AS path. This program's third function, as specified above in the "Using the program" section, will generate a table of shortest paths between each node in the generated AS network. In using BGP's elimination rules to select a route, since there are no local preference values between nodes, BGP would determine that the shortest path specified in the table our program generates would be the path selected.

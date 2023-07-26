@@ -19,16 +19,21 @@ def main():
 		try:
 			choice = int(choice)
 
+			#Function 1: generate network graph
 			if choice == Choice.GENERATE.value:
 				num_nodes = input("Enter the number of nodes in the network: ")
 				graph = generate_graph(num_nodes)
+			#Function 2: display network graph
 			elif choice == Choice.DISPLAY.value:
 				display_graph(graph)
+			#Function 3: display Dijkstra's shortest paths
 			elif choice == Choice.SUMMARY.value:
 				network_summary(graph)
+			#Function 0: exit function
 			elif choice == Choice.EXIT.value:
 				run = False
 				print("Bye now!\n")
+			#Default: invalid choice
 			else:
 				print("Invalid choice selected\n")
 

@@ -44,8 +44,8 @@ def main():
 def djikstras_algorithm(graph, start_node) -> dict:
 	"""Calculates the shortest path from a node to all nodes
 
-	:param graph:
-	:param start_node:
+	:param graph: AS network graph
+	:param start_node: source node in the AS
 	:return path_dict: Dictionary of format {node : distance from start_node} for all nodes
 	"""
 	
@@ -86,7 +86,10 @@ def djikstras_algorithm(graph, start_node) -> dict:
 	return path_dict
 
 def get_input() -> str:
-	"""Gets the menu selection from the user"""
+	"""Gets the menu selection from the user
+
+	:return: input string
+	"""
 	
 	print("Select from the following options:\n"
 		  "1. Generate Graph\n"
@@ -115,7 +118,7 @@ def generate_graph(num_nodes: int) -> nx.classes.graph.Graph:
 def display_graph(network_graph: nx.classes.graph.Graph):
 	"""Displays an existing AS network graph
 	
-	:param network_graph:
+	:param network_graph: AS network graph
 	"""
 	
 	if network_graph is not None:
@@ -136,8 +139,9 @@ def display_graph(network_graph: nx.classes.graph.Graph):
 def network_summary(network_graph: nx.classes.graph.Graph) -> None:
 	"""Dislpay a summary of shortest paths from all nodes to all others
 	
-	:param network_graph:
+	:param network_graph: AS network graph
 	"""
+
 	if network_graph is not None:
 		distances_dict_list = get_all_shortest_paths(network_graph)
 		distance_matrix = distance_dict_to_matrix(distances_dict_list)
@@ -148,7 +152,7 @@ def network_summary(network_graph: nx.classes.graph.Graph) -> None:
 def get_all_shortest_paths(network: nx.classes.graph.Graph) -> list:
 	"""Calculates Djikstra's Algorithm from all nodes
 
-	:param network: Graph of the network
+	:param network: AS network graph
 	:return distances: dict of Distances from a node to other nodes
 	"""
 
@@ -158,7 +162,11 @@ def get_all_shortest_paths(network: nx.classes.graph.Graph) -> list:
 		shortest_paths.append(djikstras_algorithm(network, node))
 	return shortest_paths
 
-def display_distance_matrix(distance_matrix) -> None:
+def display_distance_matrix(distance_matrix: np.array) -> None:
+	"""Displays the shortest distance matrix for all nodes to all others
+
+	:param distance_matrix: 2-D numpy array with distance from source to destination node
+	"""
 	fig, ax = plt.subplots()
 	ax.matshow(distance_matrix, cmap = 'Oranges')
 
@@ -170,6 +178,11 @@ def display_distance_matrix(distance_matrix) -> None:
 	plt.show()
 
 def distance_dict_to_matrix(distances: list) -> np.array:
+	"""Converts a list of distance dictionaries to a 2-D numpy array
+
+	:param distances: list of dictionaries with distances to destination nodes
+	:return distance_matrix: 2-D numpy array of distances from source to destination node
+	"""
 	num_nodes = len(distances)
 	distance_matrix = np.empty([num_nodes,num_nodes])
 	
